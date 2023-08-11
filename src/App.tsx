@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SwaggerInput from "./components/SwaggerInput";
 import ConversionResult from "./components/ConversionResult";
 import { SwaggerAPI } from "./interfaces/Swagger";
+import { PostmanAPI, Info, Item } from "./interfaces/Postman";
 
 interface Endpoint {
   path: string;
@@ -11,7 +12,7 @@ interface Endpoint {
 const App: React.FC = () => {
   const [swaggerJson, setSwaggerJson] = useState<SwaggerAPI | null>(null);
   const [selectedEndpoints, setSelectedEndpoints] = useState<Endpoint[]>([]);
-  const [postmanJson, setPostmanJson] = useState<any | null>(null);
+  const [postmanJson, setPostmanJson] = useState<PostmanAPI | null>(null);
 
   const handlePasteFromClipboard = (content: string) => {
     try {
@@ -38,7 +39,35 @@ const App: React.FC = () => {
   const convertSelectedToPostman = () => {
     // Implement the conversion logic for selected endpoints to Postman format
     // Update the postmanJson state with the converted data
-    console.log("Selected endpoints:", selectedEndpoints);
+    const info: Info = {
+      name: "ProtoFusionService",
+      schema:
+        "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    };
+
+    const items: Item[] = selectedEndpoints.map((endpoint) => {
+      const pathArray: string[] = endpoint.path.split("/");
+      const item: Item = {
+        name: endpoint.path,
+        request: {
+          url: { raw: endpoint.path, path: pathArray },
+          method: endpoint.method.toUpperCase(),
+          header: [],
+          body: {
+            mode: "raw",
+            raw: "",
+          },
+        },
+        response: [],
+      };
+      return item;
+    });
+
+    const postmanJson: PostmanAPI = {
+      info: info,
+      item: items,
+    };
+    setPostmanJson(postmanJson);
   };
 
   return (
@@ -71,9 +100,7 @@ const App: React.FC = () => {
           </button>
         </div>
       )}
-      {postmanJson && (
-        <ConversionResult swaggerJson={swaggerJson} postmanJson={postmanJson} />
-      )}
+      {postmanJson && <ConversionResult postmanJson={postmanJson} />}
     </div>
   );
 };
