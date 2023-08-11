@@ -19,11 +19,7 @@ const SwaggerInput: React.FC<SwaggerInputProps> = ({ onPaste }) => {
 
   return (
     <div>
-      <textarea
-        value={swaggerJson}
-        onChange={(e) => setSwaggerJson(e.target.value)}
-      />
-      <button onClick={handlePaste}>Paste from Clipboard</button>
+      <button onClick={handlePaste}>Get Swagger data from Clipboard</button>
     </div>
   );
 };
