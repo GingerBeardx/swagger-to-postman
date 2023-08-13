@@ -3,6 +3,7 @@ import SwaggerInput from './components/SwaggerInput';
 import ConversionResult from './components/ConversionResult';
 import { SwaggerAPI } from './interfaces/Swagger';
 import { PostmanAPI, Info, Item } from './interfaces/Postman';
+import Button from './components/ui/Button';
 
 interface Endpoint {
   path: string;
@@ -13,14 +14,25 @@ const App: React.FC = () => {
   const [swaggerJson, setSwaggerJson] = useState<SwaggerAPI | null>(null);
   const [selectedEndpoints, setSelectedEndpoints] = useState<Endpoint[]>([]);
   const [postmanJson, setPostmanJson] = useState<PostmanAPI | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handlePasteFromClipboard = (content: string) => {
     try {
       const parsedSwagger = JSON.parse(content);
       setSwaggerJson(parsedSwagger);
     } catch (error) {
-      console.error('Error parsing Swagger JSON:', error);
+      setError('Invalid JSON was found during conversion.');
     }
+  };
+
+  const handleClearEndpoints = () => {
+    setSwaggerJson(null);
+    setSelectedEndpoints([]);
+    setPostmanJson(null);
+  };
+
+  const handleError = (error: unknown) => {
+    setError(error as string);
   };
 
   const handleEndpointSelect = (endpoint: Endpoint) => {
@@ -40,7 +52,7 @@ const App: React.FC = () => {
     // Implement the conversion logic for selected endpoints to Postman format
     // Update the postmanJson state with the converted data
     const info: Info = {
-      name: 'ProtoFusionService',
+      name: 'ProtoEndpoints',
       schema:
         'https://schema.getpostman.com/json/collection/v2.1.0/collection.json',
     };
@@ -71,13 +83,18 @@ const App: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1 className='text-3xl font-bold'>Swagger to Postman Converter</h1>
-      <SwaggerInput onPaste={handlePasteFromClipboard} />
+    <div className='w-screen min-h-screen bg-gradient-to-r from-blue-600 to-green-600 text-white'>
+      <h1 className='text-3xl text-center'>Swagger to Postman Converter</h1>
+      <SwaggerInput
+        onPaste={handlePasteFromClipboard}
+        onClear={handleClearEndpoints}
+        onError={handleError}
+      />
+      {error && <p className='text-red-500'>{error}</p>}
       {swaggerJson && (
         <div>
-          <h2>Select Endpoints</h2>
-          <ul>
+          <h2 className='text-2xl'>Select Endpoints:</h2>
+          <ul className='mx-4 my-2'>
             {Object.entries(swaggerJson.paths).map(([path, methods]) =>
               Object.keys(methods).map((method) => (
                 <li key={`${method}-${path}`}>
@@ -95,9 +112,9 @@ const App: React.FC = () => {
               ))
             )}
           </ul>
-          <button onClick={convertSelectedToPostman}>
+          <Button onClick={convertSelectedToPostman}>
             Convert Selected to Postman
-          </button>
+          </Button>
         </div>
       )}
       {postmanJson && <ConversionResult postmanJson={postmanJson} />}

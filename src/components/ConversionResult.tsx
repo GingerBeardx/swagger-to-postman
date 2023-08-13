@@ -1,4 +1,6 @@
-import React from "react";
+import React from 'react';
+
+import Button from './ui/Button';
 
 interface ConversionResultProps {
   postmanJson: any;
@@ -13,7 +15,7 @@ const ConversionResult: React.FC<ConversionResultProps> = ({ postmanJson }) => {
   return (
     <div>
       <h2>Postman JSON</h2>
-      <button onClick={handleCopyToClipboard}>Copy To Clipboard</button>
+      <Button onClick={handleCopyToClipboard}>Copy To Clipboard</Button>
       <pre>{JSON.stringify(postmanJson, null, 2)}</pre>
     </div>
   );
