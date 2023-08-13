@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import SwaggerInput from "./components/SwaggerInput";
-import ConversionResult from "./components/ConversionResult";
-import { SwaggerAPI } from "./interfaces/Swagger";
-import { PostmanAPI, Info, Item } from "./interfaces/Postman";
+import React, { useState } from 'react';
+import SwaggerInput from './components/SwaggerInput';
+import ConversionResult from './components/ConversionResult';
+import { SwaggerAPI } from './interfaces/Swagger';
+import { PostmanAPI, Info, Item } from './interfaces/Postman';
 
 interface Endpoint {
   path: string;
@@ -19,7 +19,7 @@ const App: React.FC = () => {
       const parsedSwagger = JSON.parse(content);
       setSwaggerJson(parsedSwagger);
     } catch (error) {
-      console.error("Error parsing Swagger JSON:", error);
+      console.error('Error parsing Swagger JSON:', error);
     }
   };
 
@@ -40,13 +40,13 @@ const App: React.FC = () => {
     // Implement the conversion logic for selected endpoints to Postman format
     // Update the postmanJson state with the converted data
     const info: Info = {
-      name: "ProtoFusionService",
+      name: 'ProtoFusionService',
       schema:
-        "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        'https://schema.getpostman.com/json/collection/v2.1.0/collection.json',
     };
 
     const items: Item[] = selectedEndpoints.map((endpoint) => {
-      const pathArray: string[] = endpoint.path.split("/");
+      const pathArray: string[] = endpoint.path.split('/');
       const item: Item = {
         name: endpoint.path,
         request: {
@@ -54,8 +54,8 @@ const App: React.FC = () => {
           method: endpoint.method.toUpperCase(),
           header: [],
           body: {
-            mode: "raw",
-            raw: "",
+            mode: 'raw',
+            raw: '',
           },
         },
         response: [],
@@ -72,7 +72,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>Swagger to Postman Converter</h1>
+      <h1 className='text-3xl font-bold'>Swagger to Postman Converter</h1>
       <SwaggerInput onPaste={handlePasteFromClipboard} />
       {swaggerJson && (
         <div>
@@ -83,7 +83,7 @@ const App: React.FC = () => {
                 <li key={`${method}-${path}`}>
                   <label>
                     <input
-                      type="checkbox"
+                      type='checkbox'
                       checked={selectedEndpoints.some(
                         (item) => item.path === path && item.method === method
                       )}
