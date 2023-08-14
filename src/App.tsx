@@ -57,10 +57,12 @@ const App: React.FC = () => {
   };
 
   const convertSelectedToPostman = () => {
-    // Implement the conversion logic for selected endpoints to Postman format
-    // Update the postmanJson state with the converted data
+    if (!swaggerJson) {
+      return;
+    }
+    console.log(swaggerJson.info.title);
     const info: Info = {
-      name: "ProtoEndpoints",
+      name: swaggerJson.info.title || "Converted from Swagger to Postman",
       schema:
         "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     };

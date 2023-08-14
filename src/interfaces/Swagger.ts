@@ -51,4 +51,8 @@ export interface SwaggerPaths {
   paths: SwaggerPath;
 }
 
-export interface SwaggerAPI extends SwaggerInfo, SwaggerPaths {}
+export interface SwaggerAPI {
+  info: SwaggerInfo;
+  servers: SwaggerServer[];
+  paths: SwaggerPath;
+}
