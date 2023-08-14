@@ -3,13 +3,10 @@ import SwaggerInput from "./components/SwaggerInput";
 import ConversionResult from "./components/ConversionResult";
 import { SwaggerAPI } from "./interfaces/Swagger";
 import { PostmanAPI, Info, Item } from "./interfaces/Postman";
+import { Endpoint } from "./interfaces/Misc";
 import Button from "./components/ui/Button";
 import Notification from "./components/Notofication";
-
-interface Endpoint {
-  path: string;
-  method: string;
-}
+import EndpointList from "./components/EndpointList";
 
 const App: React.FC = () => {
   const [swaggerJson, setSwaggerJson] = useState<SwaggerAPI | null>(null);
@@ -24,6 +21,11 @@ const App: React.FC = () => {
     } catch (error) {
       setError("Invalid JSON was found during conversion.");
     }
+  };
+
+  const handleCopyToClipboard = () => {
+    // Implement the copy to clipboard logic
+    navigator.clipboard.writeText(JSON.stringify(postmanJson, null, 2));
   };
 
   const handleClearEndpoints = () => {
@@ -99,33 +101,26 @@ const App: React.FC = () => {
         onError={handleError}
       />
       {error && <Notification type="error">{error}</Notification>}
-      {swaggerJson && (
-        <div>
-          <h2 className="text-2xl">Select Endpoints:</h2>
-          <ul className="mx-4 my-2">
-            {Object.entries(swaggerJson.paths).map(([path, methods]) =>
-              Object.keys(methods).map((method) => (
-                <li key={`${method}-${path}`}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={selectedEndpoints.some(
-                        (item) => item.path === path && item.method === method
-                      )}
-                      onChange={() => handleEndpointSelect({ path, method })}
-                    />
-                    {`${method.toUpperCase()} ${path}`}
-                  </label>
-                </li>
-              ))
-            )}
-          </ul>
-          <Button onClick={convertSelectedToPostman}>
-            Convert Selected to Postman
-          </Button>
-        </div>
-      )}
-      {postmanJson && <ConversionResult postmanJson={postmanJson} />}
+      <div className="w-screen flex gap-3 p-4">
+        {swaggerJson && (
+          <div className="w-1/2">
+            <EndpointList
+              swaggerJson={swaggerJson}
+              selectedEndpoints={selectedEndpoints}
+              onSelect={handleEndpointSelect}
+            />
+            <Button onClick={convertSelectedToPostman}>
+              Convert Selected to Postman
+            </Button>
+          </div>
+        )}
+        {postmanJson && (
+          <div className="w-1/2">
+            <ConversionResult postmanJson={postmanJson} />
+            <Button onClick={handleCopyToClipboard}>Copy To Clipboard</Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
