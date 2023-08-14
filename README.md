@@ -1,27 +1,40 @@
-# React + TypeScript + Vite
+# Swagger to Postman Converter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a React-based web application that facilitates the conversion of Swagger API documentation into a Postman collection format.
 
-Currently, two official plugins are available:
+# Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Paste from Clipboard: Users can easily paste their Swagger JSON directly into the provided input.
+- Select Endpoints: After parsing the Swagger JSON, users can select which specific endpoints they want to include in the Postman collection.
+- Error Notifications: The application provides visual feedback in the form of notifications for any errors encountered, such as invalid JSON format.
+- Postman Collection Output: Once the conversion is done, the resulting Postman collection is displayed, allowing users to review it before use.
+- Copy to Clipboard: With a single click, users can copy the generated Postman collection to their clipboard, ready to be imported into Postman.
 
-## Expanding the ESLint configuration
+# Usage
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. Open the application.
+1. Paste your Swagger JSON into the provided input area.
+1. Select the endpoints you wish to include in your Postman collection.
+1. Click on the "Convert Selected to Postman" button.
+1. Review the generated Postman collection.
+1. Click the "Copy To Clipboard" button to copy the generated collection, ready to be imported into Postman.
 
-- Configure the top-level `parserOptions` property like this:
+# Components
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+- SwaggerInput: This component allows users to paste their Swagger JSON and provides controls for clearing the input or handling errors.
+- EndpointList: Displays a list of available endpoints from the Swagger JSON for users to select.
+- ConversionResult: Shows the resulting Postman collection after conversion.
+- Notification: A visual feedback component that displays error messages or other notifications.
+- Button: A reusable button component.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+# Dependencies
+
+This project uses Vite-React and is styled with Tailwind CSS for a sleek and responsive design.
+
+# Contribution
+
+Contributions are welcome! Please fork this repository and open a pull request to add enhancements or bug fixes.
+
+# License
+
+This project is open-source and available under the MIT License.

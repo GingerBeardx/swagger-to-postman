@@ -5,16 +5,12 @@ interface ConversionResultProps {
 }
 
 const ConversionResult: React.FC<ConversionResultProps> = ({ postmanJson }) => {
-  const handleCopyToClipboard = () => {
-    // Implement the copy to clipboard logic
-    navigator.clipboard.writeText(JSON.stringify(postmanJson, null, 2));
-  };
-
   return (
-    <div>
-      <h2>Postman JSON</h2>
-      <button onClick={handleCopyToClipboard}>Copy To Clipboard</button>
-      <pre>{JSON.stringify(postmanJson, null, 2)}</pre>
+    <div className="mb-4 ">
+      <h2 className="text-2xl">Postman JSON:</h2>
+      <pre className="max-h-[40rem] overflow-auto border rounded-lg">
+        {JSON.stringify(postmanJson, null, 2)}
+      </pre>
     </div>
   );
 };
