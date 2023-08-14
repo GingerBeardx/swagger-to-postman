@@ -17,9 +17,7 @@ const EndpointList: React.FC<EndpointListProps> = ({
   const areAllSelected = (): boolean => {
     let totalEndpoints = 0;
     for (let path in swaggerJson.paths) {
-      for (let method in swaggerJson.paths[path]) {
-        totalEndpoints++;
-      }
+      totalEndpoints += Object.keys(swaggerJson.paths[path]).length;
     }
     return totalEndpoints === selectedEndpoints.length;
   };
